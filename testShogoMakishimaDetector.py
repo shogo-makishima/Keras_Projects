@@ -35,7 +35,7 @@ model.load_weights("I:\GitHub\Shogo-Makishima\Datasets\Models\Shogo-Makishima\sh
 
 # Video capture
 capture = cv2.VideoCapture(0)
-SIZE = (128, 128)
+SIZE = (480, 480)
 
 success = True
 while (success):
@@ -50,6 +50,10 @@ while (success):
         result = model.detect([rgb], verbose=0)[0]
         splash = color_splash(rgb, result['masks'])
         splash = cv2.cvtColor(splash, cv2.COLOR_RGB2BGR)
+
+        for rect in result['rois']:
+            y1, x1, y2, x2 = rect
+            cv2.rectangle(splash, (x1, y1), (x2, y2), (255, 0, 0))
 
         cv2.imshow("Result", splash)
         cv2.waitKey(25)
